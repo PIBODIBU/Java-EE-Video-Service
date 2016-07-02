@@ -23,4 +23,8 @@ public class Logger {
     public static void i(String message) {
         System.out.println(ANSI_BLUE + message + ANSI_RESET);
     }
+
+    public static void w(String message) {
+        System.out.println(ANSI_YELLOW + message + ANSI_RESET);
+    }
 }

@@ -1,1 +1,14 @@
-servlets/SimpleServlet.class
+servlets/ErrorHandler.class
+models/User.class
+rest/HelloWorldService.class
+servlets/PlayerServlet.class
+servlets/HomeServlet.class
+utils/MDColors.class
+servlets/rooms/AllRooms.class
+utils/Logger.class
+servlets/rooms/MyRooms.class
+models/Room.class
+servlets/rooms/Room.class
+filters/AuthenticationFilter.class
+utils/DBUtils.class
+filters/LogFilter.class

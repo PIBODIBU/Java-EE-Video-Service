@@ -1,5 +1,9 @@
 package models;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class User {
 
     private String name;
@@ -10,10 +14,12 @@ public class User {
         this.uid = uid;
     }
 
+    @XmlElement(name = "name")
     public String getName() {
         return name;
     }
 
+    @XmlElement(name = "uid")
     public String getUid() {
         return uid;
     }
