@@ -55,10 +55,12 @@ public class VKServlet extends HttpServlet implements AuthorizationInterface {
         );
 
         if (!isUserSignedUp(user.getEmail())) {
+            // User is login for the first time
             Logger.i(getServletName() + " -> doGet() -> isUserSignedUp() -> false");
 
             addUserToDatabase(user);
         } else {
+            // User have logged before, just update info and set session
             Logger.i(getServletName() + " -> doGet() -> isUserSignedUp() -> true");
 
             HttpSession session = request.getSession();
@@ -133,7 +135,7 @@ public class VKServlet extends HttpServlet implements AuthorizationInterface {
             PreparedStatement prepStat;
             ResultSet resultSet;
             Connection connection;
-            boolean isLoggedIn = false;
+            boolean isLoggedIn;
 
             // Prepare SQL query
             String sql = "SELECT * FROM users WHERE BINARY email=?";
@@ -161,6 +163,7 @@ public class VKServlet extends HttpServlet implements AuthorizationInterface {
     }
 
     public boolean addUserToDatabase(ResponseModel user) {
+        // TODO
         return false;
     }
 }

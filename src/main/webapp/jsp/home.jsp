@@ -16,27 +16,74 @@
             rel='stylesheet' type='text/css'>
     <script src="https://storage.googleapis.com/code.getmdl.io/1.1.3/material.min.js"></script>
 </head>
-<body>
+<body style="padding: 50px">
 
-<a href="https://oauth.vk.com/authorize?client_id=5084652&scope=friends,video,offline,email&redirect_uri=http://localhost:8080/login/vk&response_type=code&v=5.52">
-    <div class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-        VK
-    </div>
-</a>
-
-<a href="${pageContext.request.contextPath}/logout">
-    <div class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-        Logout
-    </div>
-</a>
 
 <%
     HttpSession httpSession = request.getSession();
+%>
+
+<h5>Login</h5>
+
+<form action="https://oauth.vk.com/authorize"
+      style="float: left;"
+      method="get">
+    <input type="hidden" name="client_id" value="5084652">
+    <input type="hidden" name="scope" value="friends,video,offline,email">
+    <input type="hidden" name="redirect_uri" value="http://localhost:8080/login/vk">
+    <input type="hidden" name="response_type" value="code">
+    <input type="hidden" name="v" value="5.52">
+
+    <button type="submit"
+            class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" <%=httpSession.getAttribute("email") != null ? "disabled" : ""%>>
+        VK
+    </button>
+</form>
+
+<form action="https://oauth.vk.com/authorize"
+      style="float: left;"
+      method="get">
+    <input type="hidden" name="client_id" value="5084652">
+    <input type="hidden" name="scope" value="friends,video,offline,email">
+    <input type="hidden" name="redirect_uri" value="http://localhost:8080/login/vk">
+    <input type="hidden" name="response_type" value="code">
+    <input type="hidden" name="v" value="5.52">
+
+    <button type="submit"
+            class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" <%=httpSession.getAttribute("email") != null ? "disabled" : ""%>>
+        Facebook
+    </button>
+</form>
+
+<form action="https://oauth.vk.com/authorize"
+      method="get">
+    <input type="hidden" name="client_id" value="5084652">
+    <input type="hidden" name="scope" value="friends,video,offline,email">
+    <input type="hidden" name="redirect_uri" value="http://localhost:8080/login/vk">
+    <input type="hidden" name="response_type" value="code">
+    <input type="hidden" name="v" value="5.52">
+
+    <button type="submit"
+            class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" <%=httpSession.getAttribute("email") != null ? "disabled" : ""%>>
+        Google+
+    </button>
+</form>
+
+<form action="${pageContext.request.contextPath}/logout"
+      method="get">
+
+    <button type="submit"
+            class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" <%=httpSession.getAttribute("email") == null ? "disabled" : ""%>>
+        Logout
+    </button>
+</form>
+
+<%
     if (session.getAttribute("name") != null && session.getAttribute("surname") != null) {
 %>
-<h5>
+<h6>
     Hi, <%=httpSession.getAttribute("name")%> <%=httpSession.getAttribute("surname")%>
-</h5>
+</h6>
 <%
     }
 %>
