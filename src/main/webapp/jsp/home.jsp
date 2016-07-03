@@ -16,7 +16,7 @@
 </head>
 <body>
 
-<a href="https://oauth.vk.com/authorize?client_id=5084652&scope=friends,video,offline&redirect_uri=http://0.0.0.0/home&response_type=code&v=5.52"
+<a href="https://oauth.vk.com/authorize?client_id=5084652&scope=friends,video,offline&redirect_uri=http://localhost:8080/login/vk&response_type=code&v=5.52"
    target="_blank">
     <div class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
         VK
