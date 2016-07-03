@@ -10,10 +10,10 @@ import java.util.LinkedList;
 public class DBUtils {
     // JDBC driver name and database URL
     public static final String DB_DRIVER = "com.mysql.jdbc.Driver";
-    public static final String DB_URL = "jdbc:mysql://localhost:3306/java_ee";
+    public static final String DB_URL = "jdbc:mysql://207.244.95.136:3306/java_ee";
 
     //  Database credentials
-    public static final String DB_USER = "root";
+    public static final String DB_USER = "java_ee";
     public static final String DB_PASS = "111111";
 
     static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
