@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 
 <html lang="en">
@@ -16,12 +18,28 @@
 </head>
 <body>
 
-<a href="https://oauth.vk.com/authorize?client_id=5084652&scope=friends,video,offline&redirect_uri=http://localhost:8080/login/vk&response_type=code&v=5.52"
-   target="_blank">
+<a href="https://oauth.vk.com/authorize?client_id=5084652&scope=friends,video,offline,email&redirect_uri=http://localhost:8080/login/vk&response_type=code&v=5.52">
     <div class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
         VK
     </div>
 </a>
+
+<a href="${pageContext.request.contextPath}/logout">
+    <div class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+        Logout
+    </div>
+</a>
+
+<%
+    HttpSession httpSession = request.getSession();
+    if (session.getAttribute("name") != null && session.getAttribute("surname") != null) {
+%>
+<h5>
+    Hi, <%=httpSession.getAttribute("name")%> <%=httpSession.getAttribute("surname")%>
+</h5>
+<%
+    }
+%>
 
 </body>
 </html>

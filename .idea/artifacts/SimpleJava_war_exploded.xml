@@ -48,6 +48,9 @@
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.9.2" />
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-jaxrs:1.9.2" />
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-xc:1.9.2" />
+          <element id="library" level="project" name="Maven: com.squareup.retrofit2:retrofit:2.1.0" />
+          <element id="library" level="project" name="Maven: com.squareup.okhttp3:okhttp:3.3.0" />
+          <element id="library" level="project" name="Maven: com.squareup.okio:okio:1.8.0" />
         </element>
       </element>
       <element id="directory" name="META-INF">
