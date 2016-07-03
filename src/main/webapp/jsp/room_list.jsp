@@ -2,6 +2,7 @@
 <%@ page import="models.Room" %>
 <%@ page import="java.util.LinkedList" %>
 <%@ page import="utils.MDColors" %>
+<%@ page import="utils.Logger" %>
 <%@taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -46,12 +47,18 @@
         border-right: 0;
     }
 
+    .mdl-card {
+        width: 100%;
+        height: auto;
+    }
+
     .mdl-textfield {
         width: 100%;
     }
 
     .mdl-grid {
         width: 80%;
+        max-width: 100%;
     }
 
     .mdl-cell {
@@ -106,10 +113,11 @@
                     LinkedList<Room> rooms = (LinkedList<Room>) request.getAttribute("rooms");
                     for (Room room : rooms) {
                 %>
-                <div class="mdl-cell mdl-cell--4-col">
+                <div class="mdl-cell mdl-cell--1-col">
                     <div class="card-square mdl-card mdl-shadow--8dp">
                         <div class="mdl-card__title mdl-card--expand mdl-shadow--2dp"
                              style="
+                                     max-height: 100px;
                                      height: 100px;
                                      width: 100%;
                                      color: #fff;
@@ -120,23 +128,23 @@
                         </div>
 
                         <div class="mdl-card__supporting-text">
-                            <h5>Info: </h5>
                             <h6><%=room.getDescription()%>
                             </h6>
 
                             <h5>Owner: </h5>
                             <h6>
-                                Name: <%=room.getOwner().getName()%>
-                                <br/>
-                                UID: <%=room.getOwner().getUid()%>
+                                <%=room.getOwner().getName()%> <%=room.getOwner().getSurName()%>
                             </h6>
                         </div>
 
                         <div class="mdl-card__actions mdl-card--border">
-                            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-                               href="http://localhost:8080/rooms/<%=room.getUID()%>">
-                                Enter
-                            </a>
+                            <form action="${pageContext.request.contextPath}/rooms/enter" method="get">
+                                <input type="hidden" name="room_uid" value="<%=room.getUID()%>">
+                                <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                                        type="submit">
+                                    Enter
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -153,7 +161,7 @@
 
             <div class="mdl-grid">
 
-                <div class="mdl-cell mdl-cell--4-col">
+                <div class="mdl-cell mdl-cell--1-col">
                     <div class="card-square mdl-card mdl-shadow--8dp">
                         <div class="mdl-card__title mdl-card--expand mdl-shadow--2dp"
                              style="
@@ -165,7 +173,7 @@
                         </div>
 
                         <div class="mdl-card__supporting-text">
-                            <form action="/rooms/my" method="post">
+                            <form action="${pageContext.request.contextPath}/rooms/my" method="post">
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                     <input class="mdl-textfield__input" type="text" id="field_name" name="room_name">
                                     <label class="mdl-textfield__label" for="field_name">Name...</label>
@@ -203,10 +211,11 @@
                     </div>
                 </div>
 
-                <div class="mdl-cell mdl-cell--4-col">
+                <div class="mdl-cell mdl-cell--1-col">
                     <div class="card-square mdl-card mdl-shadow--8dp">
                         <div class="mdl-card__title mdl-card--expand mdl-shadow--2dp"
                              style="
+                            max-height: 100px;
                             height: 100px;
                             width: 100%;
                             color: #fff;
@@ -217,10 +226,9 @@
                         <div class="mdl-card__supporting-text">
                             <h5>Warning! This action cannot be undone.</h5>
 
-                            <form action="room_list.jsp" method="post">
-
-                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--red"
-                                        style="float: right;"
+                            <form action="${pageContext.request.contextPath}/rooms" method="post">
+                                <button class="mdl-button mdl-js-button mdl-button--primary"
+                                        style="float: right; color: #F44336;"
                                         type="submit">
                                     Delete
                                 </button>

@@ -7,19 +7,23 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class User {
 
     private String name;
+    private String surName;
     private String uid;
 
-    public User(String name, String uid) {
+    public User(String name, String surName, String uid) {
         this.name = name;
+        this.surName = surName;
         this.uid = uid;
     }
 
-    @XmlElement(name = "name")
     public String getName() {
         return name;
     }
 
-    @XmlElement(name = "uid")
+    public String getSurName() {
+        return surName;
+    }
+
     public String getUid() {
         return uid;
     }

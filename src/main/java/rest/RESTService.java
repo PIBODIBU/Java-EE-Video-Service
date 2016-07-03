@@ -32,7 +32,10 @@ public class RESTService {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                users.add(new User(resultSet.getString("name"), resultSet.getString("user_uid")));
+                users.add(new User(
+                        resultSet.getString("name"),
+                        resultSet.getString("surname"),
+                        resultSet.getString("user_uid")));
             }
         } catch (Exception ex) {
             Logger.e(ex.getMessage());
@@ -57,7 +60,11 @@ public class RESTService {
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.first();
 
-            users.add(new User(resultSet.getString("name"), resultSet.getString("user_uid")));
+            users.add(new User(
+                    resultSet.getString("name"),
+                    resultSet.getString("surname"),
+                    resultSet.getString("user_uid")
+            ));
         } catch (Exception ex) {
             Logger.e(ex.getMessage());
         }

@@ -8,13 +8,17 @@ public class Room {
     private String color;
     private String UID;
 
-    public Room(String name, String description, String ownerUID, User owner, String color, String UID) {
+    private String value_time;
+
+    public Room(String name, String description, String ownerUID, User owner, String color, String UID, String value_time) {
         this.name = name;
         this.description = description;
         this.ownerUID = ownerUID;
         this.owner = owner;
         this.color = color;
         this.UID = UID;
+
+        this.value_time = value_time;
     }
 
     public String getName() {
@@ -39,5 +43,9 @@ public class Room {
 
     public String getUID() {
         return UID;
+    }
+
+    public String getValue_time() {
+        return value_time;
     }
 }

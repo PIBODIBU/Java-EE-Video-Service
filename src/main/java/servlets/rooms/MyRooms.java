@@ -22,7 +22,7 @@ public class MyRooms extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("rooms", getRoomList(request.getParameter("uid")));
+        request.setAttribute("rooms", DBUtils.getRoomByUser(request.getParameter("uid")));
         request.getRequestDispatcher("/jsp/room_list.jsp").forward(request, response);
 
     }
@@ -43,87 +43,14 @@ public class MyRooms extends HttpServlet {
             }
         }
 
-        request.setAttribute("rooms", getRoomList(request.getParameter("user_uid")));
+        request.setAttribute("rooms", DBUtils.getRoomByUser(request.getParameter("user_uid")));
         request.getRequestDispatcher("/jsp/room_list.jsp").forward(request, response);
-    }
-
-    private LinkedList<Room> getRoomList(String userUid) {
-        ResultSet roomsResultSet = null;
-        ResultSet ownersResultSet = null;
-        LinkedList<Room> rooms = new LinkedList<Room>();
-
-        if (userUid == null) {
-            Logger.e("User's uid is null");
-            return null;
-        }
-
-        try {
-            // Register JDBC driver
-            Class.forName(DBUtils.DB_DRIVER);
-
-            // Open a connection
-            Connection conn = DriverManager.getConnection(DBUtils.DB_URL, DBUtils.DB_USER, DBUtils.DB_PASS);
-
-            // Prepare SQL query
-            String roomsSQL = "SELECT * FROM rooms WHERE BINARY owner=?";
-            PreparedStatement roomsPrepStat = null;
-
-            // Pass parameters to statement
-            try {
-                roomsPrepStat = conn.prepareStatement(roomsSQL);
-                roomsPrepStat.setString(1, userUid);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-
-            // Create ResultSet instance
-            if (roomsPrepStat != null) {
-                roomsResultSet = roomsPrepStat.executeQuery();
-            }
-
-            PreparedStatement ownersPrepStat = null;
-
-            // Create new Room objects
-            if (roomsResultSet != null) {
-                while (roomsResultSet.next()) {
-                    String ownersSQL = "SELECT * FROM users WHERE BINARY user_uid=?";
-                    ownersPrepStat = conn.prepareStatement(ownersSQL);
-                    ownersPrepStat.setString(1, roomsResultSet.getString("owner"));
-                    ownersResultSet = ownersPrepStat.executeQuery();
-                    ownersResultSet.first();
-
-                    rooms.add(
-                            new Room(
-                                    roomsResultSet.getString("name"),
-                                    roomsResultSet.getString("description"),
-                                    roomsResultSet.getString("owner"),
-                                    new User(ownersResultSet.getString("name"),
-                                            ownersResultSet.getString("user_uid")),
-                                    roomsResultSet.getString("color"),
-                                    roomsResultSet.getString("room_uid")
-                            ));
-                }
-            }
-
-            // Close connection
-            if (roomsPrepStat != null) {
-                roomsPrepStat.close();
-            }
-            conn.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        return rooms;
     }
 
     private void createRoom(String name, String description, String owner, String color, String valueTime) {
         try {
-            // Register JDBC driver class
-            Class.forName(DBUtils.DB_DRIVER);
-
             // Open new connection
-            Connection connection = DriverManager.getConnection(DBUtils.DB_URL, DBUtils.DB_USER, DBUtils.DB_PASS);
+            Connection connection = DBUtils.getConnection();
 
             // Preparing statement
             String sql = "INSERT INTO rooms (name, description, owner, color, room_uid, value_time) VALUES (?, ?, ?, ?, ?, ?)";
@@ -141,8 +68,6 @@ public class MyRooms extends HttpServlet {
             preparedStatement.setString(6, valueTime);
 
             preparedStatement.execute();
-
-            System.out.println("Prepared SQL statement: " + preparedStatement);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
