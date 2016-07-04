@@ -16,27 +16,83 @@
             rel='stylesheet' type='text/css'>
     <script src="https://storage.googleapis.com/code.getmdl.io/1.1.3/material.min.js"></script>
 </head>
-<body>
+<body style="padding: 50px">
 
-<a href="https://oauth.vk.com/authorize?client_id=5084652&scope=friends,video,offline,email&redirect_uri=http://localhost:8080/login/vk&response_type=code&v=5.52">
-    <div class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+
+    <%
+    HttpSession httpSession = request.getSession();
+%>
+
+<h5>Login</h5>
+
+<form action="https://oauth.vk.com/authorize"
+      style="float: left;"
+      method="get">
+    <input type="hidden" name="client_id" value="5084652">
+    <input type="hidden" name="scope" value="friends,video,offline,email">
+    <input type="hidden" name="redirect_uri" value="http://localhost:8080/login/vk">
+    <input type="hidden" name="response_type" value="code">
+    <input type="hidden" name="v" value="5.52">
+
+    <button type="submit"
+            class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+            <%=httpSession.getAttribute("email") != null ? "disabled" : ""%>>
         VK
-    </div>
-</a>
+    </button>
+</form>
 
-<a href="${pageContext.request.contextPath}/logout">
-    <div class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+<form action="https://oauth.vk.com/authorize"
+      style="float: left;"
+      method="get">
+    <input type="hidden" name="client_id" value="5084652">
+    <input type="hidden" name="scope" value="friends,video,offline,email">
+    <input type="hidden" name="redirect_uri" value="http://localhost:8080/login/vk">
+    <input type="hidden" name="response_type" value="code">
+    <input type="hidden" name="v" value="5.52">
+
+    <button type="submit"
+            class="<%=httpSession.getAttribute("email") == null ? "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-color-text--indigo" :
+            "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"%>"
+            <%=httpSession.getAttribute("email") != null ? "disabled" : ""%>
+    >
+        Facebook
+    </button>
+</form>
+
+<form action="https://accounts.google.com/o/oauth2/v2/auth"
+    method="get">
+    <input type="hidden" name="client_id" value="506968348094-7u8kbg2q3v4jn5glpr1q4ti8jhnk597p.apps.googleusercontent.com">
+    <input type="hidden" name="scope" value="email profile">
+    <input type="hidden" name="redirect_uri" value="http://localhost:8080/login/googleplus">
+    <input type="hidden" name="response_type" value="code">
+
+    <button type="submit"
+            class="<%=httpSession.getAttribute("email") == null ? "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-color-text--red-900" :
+            "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"%>"
+            <%=httpSession.getAttribute("email") != null ? "disabled" : ""%>
+    >
+        Google+
+    </button>
+</form>
+
+<form action="${pageContext.request.contextPath}/logout"
+    method="get">
+
+    <button type="submit"
+            class="<%=httpSession.getAttribute("email") != null ? "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-color-text--red" :
+            "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"%>"
+            <%=httpSession.getAttribute("email") == null ? "disabled" : ""%>
+    >
         Logout
-    </div>
-</a>
+    </button>
+</form>
 
 <%
-    HttpSession httpSession = request.getSession();
     if (session.getAttribute("name") != null && session.getAttribute("surname") != null) {
 %>
-<h5>
+<h6>
     Hi, <%=httpSession.getAttribute("name")%> <%=httpSession.getAttribute("surname")%>
-</h5>
+</h6>
 <%
     }
 %>

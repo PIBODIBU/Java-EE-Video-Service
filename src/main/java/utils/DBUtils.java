@@ -6,6 +6,7 @@ import models.User;
 import java.security.SecureRandom;
 import java.sql.*;
 import java.util.LinkedList;
+import java.util.Properties;
 
 public class DBUtils {
     // JDBC driver name and database URL
@@ -30,11 +31,17 @@ public class DBUtils {
     }
 
     public static Connection getConnection() throws SQLException, ClassNotFoundException {
+        Properties properties=new Properties();
+        properties.setProperty("user",DB_USER);
+        properties.setProperty("password",DB_PASS);
+        properties.setProperty("useUnicode","true");
+        properties.setProperty("characterEncoding","utf8");
+
         // Register JDBC driver
         Class.forName(DBUtils.DB_DRIVER);
 
         // Open a connection
-        return DriverManager.getConnection(DBUtils.DB_URL, DBUtils.DB_USER, DBUtils.DB_PASS);
+        return DriverManager.getConnection(DB_URL, properties);
     }
 
     public static User getUserByUid(Connection connection, String uid) throws SQLException {
@@ -48,7 +55,7 @@ public class DBUtils {
         return new User(
                 resultSet.getString("name"),
                 resultSet.getString("surname"),
-                resultSet.getString("user_uid"));
+                resultSet.getString("social_uid"));
     }
 
     public static LinkedList<Room> getRooms() {

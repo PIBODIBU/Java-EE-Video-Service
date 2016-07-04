@@ -1,9 +1,7 @@
 package servlets.authorization;
 
-import com.sun.istack.Nullable;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import utils.DBUtils;
 import utils.Logger;
 
 import javax.servlet.ServletException;
@@ -15,57 +13,56 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.util.HashMap;
 
-@WebServlet(name = "VKServlet", urlPatterns = {"/login/vk"})
-public class VKServlet extends AuthorizationServlet implements AuthorizationInterface {
-
+@WebServlet(name = "GooglePlusServlet", urlPatterns = {"/login/googleplus"})
+public class GooglePlusServlet extends AuthorizationServlet implements AuthorizationInterface {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         super.doGet(request, response);
     }
 
+    @Override
     public String getLoginType() {
-        return loginTypes.vk.toString();
+        return loginTypes.googleplus.toString();
     }
 
-    @Nullable
     public JSONObject getAccessToken(String code) {
         URL url;
+        HashMap<String, Object> parameters = new HashMap<String, Object>();
 
-        String BASE_URL = "https://oauth.vk.com/access_token?";
-        String CLIENT_ID = "5084652";
-        String CLIENT_SECRET = "PaY3jqJZO6c2iLjwDGsQ";
-        String REDIRECT_URI = "http://localhost:8080/login/vk";
+        String BASE_URL = "https://www.googleapis.com/oauth2/v4/token";
+        String CLIENT_ID = "506968348094-7u8kbg2q3v4jn5glpr1q4ti8jhnk597p.apps.googleusercontent.com";
+        String CLIENT_SECRET = "mjM7-6Ohi3Gn-wHo54MvWgPg";
+        String REDIRECT_URI = "http://localhost:8080/login/googleplus";
 
         try {
-            url = new URL(BASE_URL + "client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET + "&redirect_uri=" + REDIRECT_URI + "&code=" + code);
+            url = new URL(BASE_URL);
         } catch (MalformedURLException ex) {
             Logger.e(getServletName() + " -> getAccessToken() -> " + ex.getMessage());
             return null;
         }
 
-        return Utils.getJSONObjectViaGET(url);
+        parameters.put("client_id", CLIENT_ID);
+        parameters.put("client_secret", CLIENT_SECRET);
+        parameters.put("redirect_uri", REDIRECT_URI);
+        parameters.put("code", code);
+        parameters.put("grant_type", "authorization_code");
+
+        return Utils.getJSONObjectViaPOST(url, parameters);
     }
 
     public ResponseModel getUserInfo(JSONObject response) {
-        String BASE_URL = "https://api.vk.com/method/users.get?";
-        String FIELDS = "screen_name";
-        String VERSION = "5.52";
-
-        String userId = String.valueOf(response.getInt("user_id"));
-        String email = response.getString("email");
+        String BASE_URL = "https://www.googleapis.com/oauth2/v2/userinfo?";
+        String ALT = "json";
 
         JSONObject jsonObject;
         URL url;
 
         try {
-            url = new URL(BASE_URL + "user_ids=" + userId + "&fields=" + FIELDS + "&v=" + VERSION);
+            url = new URL(BASE_URL + "&alt=" + ALT + "&access_token=" + response.getString("access_token"));
             Logger.i(getServletName() + " -> getUserInfo() -> URL: " + url);
         } catch (MalformedURLException ex) {
             Logger.e(getServletName() + " -> getUserInfo() -> " + ex.getMessage());
@@ -73,20 +70,14 @@ public class VKServlet extends AuthorizationServlet implements AuthorizationInte
         }
 
         jsonObject = Utils.getJSONObjectViaGET(url);
-        JSONArray jsonArray = jsonObject.getJSONArray("response");
 
         Logger.i(getServletName() + " -> getUserInfo() -> " + jsonObject.toString());
 
-        if (jsonArray == null) {
-            Logger.e(getServletName() + " -> getUserInfo() -> Server response is null");
-            return null;
-        }
-
         return new ResponseModel(
-                userId,
-                jsonArray.getJSONObject(0).getString("first_name"),
-                jsonArray.getJSONObject(0).getString("last_name"),
-                email,
+                jsonObject.getString("id"),
+                jsonObject.getString("name").split(" ")[0],
+                jsonObject.getString("name").split(" ")[1],
+                jsonObject.getString("email"),
                 getLoginType()
         );
     }

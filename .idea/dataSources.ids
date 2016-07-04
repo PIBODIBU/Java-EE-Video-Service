@@ -75,7 +75,11 @@
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="21" parent="3" name="users_id_uindex">
+      <key id="21" parent="3" name="PRIMARY">
+        <columns>id</columns>
+        <primary>1</primary>
+      </key>
+      <key id="22" parent="3" name="users_id_uindex">
         <columns>id</columns>
         <underlying-index>users_id_uindex</underlying-index>
       </key>

@@ -7,7 +7,7 @@ public interface AuthorizationInterface {
 
     JSONObject getAccessToken(String code);
 
-    ResponseModel getUserInfo(String accessToken, String userId, String email);
+    ResponseModel getUserInfo(JSONObject response);
 
     boolean isUserSignedUp(String email);
 
